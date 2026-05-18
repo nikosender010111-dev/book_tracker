@@ -1,65 +1,52 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from models import Book
-from collections import defaultdict
 
 
 def calculate_average_rating(books: List[Book]) -> float:
-    """Рассчитывает среднюю оценку всех книг"""
+    """
+    Рассчитывает среднюю оценку всех книг
+    
+    Args:
+        books: Список книг
+    
+    Returns:
+        Средняя оценка (0.0 если список пуст)
+    """
     if not books:
         return 0.0
-    total_rating = sum(book.rating for book in books)
-    return round(total_rating / len(books), 2)
+    
+    total = sum(book.rating for book in books)
+    return round(total / len(books), 2)
 
 
 def get_statistics_by_author(books: List[Book]) -> Dict[str, Dict]:
     """
-    Возвращает статистику по авторам:
-    - количество книг
-    - средняя оценка
+    Получает статистику по авторам
+    
+    Args:
+        books: Список книг
+    
+    Returns:
+        Словарь {автор: {"count": число_книг, "average_rating": средняя_оценка}}
     """
     if not books:
         return {}
     
-    author_stats = defaultdict(lambda: {"count": 0, "total_rating": 0})
+    author_data = {}
     
     for book in books:
-        author_stats[book.author]["count"] += 1
-        author_stats[book.author]["total_rating"] += book.rating
+        if book.author not in author_data:
+            author_data[book.author] = {"total_rating": 0, "count": 0}
+        
+        author_data[book.author]["total_rating"] += book.rating
+        author_data[book.author]["count"] += 1
     
     # Рассчитываем среднюю оценку для каждого автора
     result = {}
-    for author, stats in author_stats.items():
+    for author, data in author_data.items():
         result[author] = {
-            "count": stats["count"],
-            "average_rating": round(stats["total_rating"] / stats["count"], 2)
+            "count": data["count"],
+            "average_rating": round(data["total_rating"] / data["count"], 2)
         }
     
     return result
-
-
-def get_books_by_rating(books: List[Book], min_rating: int = 4) -> List[Book]:
-    """Возвращает книги с оценкой выше указанной"""
-    return [book for book in books if book.rating >= min_rating]
-
-
-def get_reading_statistics(books: List[Book]) -> Dict:
-    """Расширенная статистика чтения"""
-    if not books:
-        return {
-            "total_books": 0,
-            "unique_authors": 0,
-            "average_rating": 0,
-            "max_rating": 0,
-            "min_rating": 0
-        }
-    
-    ratings = [book.rating for book in books]
-    authors = set(book.author for book in books)
-    
-    return {
-        "total_books": len(books),
-        "unique_authors": len(authors),
-        "average_rating": calculate_average_rating(books),
-        "max_rating": max(ratings),
-        "min_rating": min(ratings)
-    }
