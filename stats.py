@@ -48,5 +48,3 @@ def get_statistics_by_author(books: List[Book]) -> Dict[str, Dict]:
             "count": data["count"],
             "average_rating": round(data["total_rating"] / data["count"], 2)
         }
-    
-    return result
