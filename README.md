@@ -53,7 +53,7 @@ cd book-tracker
 Запустите приложение:
 
 bash
-python main.py
+python main.py или py main.py
 Пример работы
 text
 ================================================
