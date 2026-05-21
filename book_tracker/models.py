@@ -43,4 +43,4 @@ class Book:
         )
     
     def __str__(self) -> str:
-        return f"'{self.title}' - {self.author} (Ocenka: {self.rating}*, Prochitana: {self.date_read})"
+        return f"'{self.title}' - {self.author} (Оценка: {self.rating}*, Прочитана: {self.date_read})"
